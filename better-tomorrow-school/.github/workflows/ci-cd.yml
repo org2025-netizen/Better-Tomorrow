@@ -8,6 +8,7 @@ on:
 
 env:
   NODE_VERSION: '20.x'
+  PROJECT_DIR: better-tomorrow-school
 
 jobs:
   lint-and-test:
@@ -22,34 +23,35 @@ jobs:
           cache: 'npm'
 
       - name: Install root dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
         run: npm ci
 
       - name: Install server dependencies
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npm ci
 
       - name: Install client dependencies
-        working-directory: ./client
+        working-directory: ${{ env.PROJECT_DIR }}/client
         run: npm ci
 
       - name: Generate Prisma Client
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npx prisma generate
 
       - name: Run server lint
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npm run lint
 
       - name: Run client lint
-        working-directory: ./client
+        working-directory: ${{ env.PROJECT_DIR }}/client
         run: npm run lint
 
       - name: Type check server
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npx tsc --noEmit
 
       - name: Type check client
-        working-directory: ./client
+        working-directory: ${{ env.PROJECT_DIR }}/client
         run: npx tsc --noEmit
 
   build:
@@ -65,35 +67,36 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
+        working-directory: ${{ env.PROJECT_DIR }}
         run: |
           npm ci
           cd server && npm ci
           cd ../client && npm ci
 
       - name: Generate Prisma Client
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npx prisma generate
 
       - name: Build server
-        working-directory: ./server
+        working-directory: ${{ env.PROJECT_DIR }}/server
         run: npm run build
 
       - name: Build client
-        working-directory: ./client
+        working-directory: ${{ env.PROJECT_DIR }}/client
         run: npm run build
 
       - name: Upload server build artifact
         uses: actions/upload-artifact@v4
         with:
           name: server-dist
-          path: server/dist/
+          path: ${{ env.PROJECT_DIR }}/server/dist/
           retention-days: 1
 
       - name: Upload client build artifact
         uses: actions/upload-artifact@v4
         with:
           name: client-dist
-          path: client/dist/
+          path: ${{ env.PROJECT_DIR }}/client/dist/
           retention-days: 1
 
   deploy-api:
@@ -107,7 +110,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: server-dist
-          path: server/dist/
+          path: ${{ env.PROJECT_DIR }}/server/dist/
 
       - name: Deploy to Render
         uses: render-actions/deploy@v1
@@ -126,7 +129,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: client-dist
-          path: client/dist/
+          path: ${{ env.PROJECT_DIR }}/client/dist/
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
@@ -134,5 +137,5 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./client
+          working-directory: ${{ env.PROJECT_DIR }}/client
           vercel-args: '--prod'

@@ -3,6 +3,7 @@ services:
     name: bettertomorrow-api
     env: node
     plan: starter
+    rootDir: better-tomorrow-school/server
     buildCommand: npm ci && npx prisma generate && npm run build
     startCommand: node dist/index.js
     healthCheckPath: /health
