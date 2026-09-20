@@ -37,6 +37,7 @@ import academicRoutes from './routes/academic.routes';
 import settingRoutes from './routes/setting.routes';
 import userRoutes from './routes/user.routes';
 import auditLogRoutes from './routes/auditLog.routes';
+import adminRoutes from './routes/admin.routes';
 
 const app = express();
 
@@ -87,6 +88,7 @@ app.use('/api/academic', academicRoutes);
 app.use('/api/settings', settingRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/audit-logs', auditLogRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use('*', (_req, res) => {
   res.status(404).json({ success: false, message: 'Route not found' });

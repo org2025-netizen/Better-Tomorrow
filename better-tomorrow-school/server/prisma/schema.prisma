@@ -8,17 +8,21 @@ datasource db {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  password    String
-  name        String
-  phone       String?
-  role        String    @default("ADMIN")
-  avatar      String?
-  isActive    Boolean   @default(true)
-  lastLogin   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  role          String    @default("PARENT")
+  avatar        String?
+  isActive      Boolean   @default(true)
+  status        String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedBy    String?
+  approvedAt    DateTime?
+  rejectionReason String?
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   parent        Parent?
   teacher       Teacher?
@@ -31,6 +35,7 @@ model User {
 
   @@index([email])
   @@index([role])
+  @@index([status])
   @@map("users")
 }
 

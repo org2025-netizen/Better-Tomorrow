@@ -27,4 +27,10 @@ export const config = {
     email: process.env.SCHOOL_EMAIL || 'info@school.com',
     phone: process.env.SCHOOL_PHONE || '+1234567890',
   },
+  email: {
+    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+    port: parseInt(process.env.EMAIL_PORT || '587', 10),
+    user: process.env.EMAIL_USER || '',
+    pass: process.env.EMAIL_PASSWORD || '',
+  },
 };

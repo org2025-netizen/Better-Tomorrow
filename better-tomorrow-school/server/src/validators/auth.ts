@@ -22,3 +22,17 @@ export const refreshTokenSchema = z.object({
     refreshToken: z.string().min(1, 'Refresh token is required'),
   }),
 });
+
+export const approveUserSchema = z.object({
+  params: z.object({ id: z.string().uuid() }),
+});
+
+export const rejectUserSchema = z.object({
+  params: z.object({ id: z.string().uuid() }),
+  body: z.object({ reason: z.string().min(1, 'Rejection reason is required') }),
+});
+
+export const toggleUserStatusSchema = z.object({
+  params: z.object({ id: z.string().uuid() }),
+  body: z.object({ isActive: z.boolean() }),
+});

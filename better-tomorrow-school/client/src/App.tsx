@@ -25,6 +25,7 @@ import NotFoundPage from '@/pages/public/NotFoundPage';
 
 // Auth Pages
 import LoginPage from '@/pages/auth/LoginPage';
+import RegisterPage from '@/pages/auth/RegisterPage';
 
 // Admin Pages
 import AdminDashboard from '@/pages/admin/DashboardPage';
@@ -133,6 +134,7 @@ export default function App() {
 
       {/* Auth Routes */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
       {/* Admin Routes */}
       <Route
